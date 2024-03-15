@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { Button, Divider, Typography } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import Swal from "sweetalert2";
+import { deleteExtension } from "../../utils/deleteExtension";
 
 const Encrypt = () => {
   const { Paragraph } = Typography;
@@ -29,7 +30,7 @@ const Encrypt = () => {
 
     reader.onload = (event) => {
       const text = event.target.result;
-      setFileContent({ file, name: text });
+      setFileContent({ file, fileTextContent: text, name: file.name });
     };
     reader.readAsText(file);
   };
@@ -40,7 +41,7 @@ const Encrypt = () => {
 
     reader.onload = (event) => {
       const text = event.target.result;
-      setkeyFile({ file, name: text });
+      setkeyFile({ file, fileTextContent: text });
     };
     reader.readAsText(file);
   };
@@ -52,7 +53,7 @@ const Encrypt = () => {
     fd.append("fileContent", fileContent.file);
     fd.append("keyFile", keyFile.file);
 
-    console.log(fd);
+    setFileContent({ ...fileContent, name: fileContent.name });
 
     try {
       const resp = await fetch("http://127.0.0.1:5000/encrypt", {
@@ -70,9 +71,11 @@ const Encrypt = () => {
         new Blob([blob], { type: "text/plain" })
       );
 
+      const fileName = deleteExtension(fileContent.name);
+
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "cifrado.txt"); // Establecemos el nombre del archivo
+      link.setAttribute("download", `${fileName}__C.txt`); // Establecemos el nombre del archivo
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -91,10 +94,10 @@ const Encrypt = () => {
         <form onSubmit={handleSubmit}>
           <h3>Cargar archivo a cifrar</h3>
 
-          {fileContent && fileContent.name && (
+          {fileContent && fileContent.fileTextContent && (
             <>
               <h4>Texto a cifrar:</h4>
-              <Paragraph>{fileContent.name}</Paragraph>
+              <Paragraph>{fileContent.fileTextContent}</Paragraph>
             </>
           )}
 
@@ -114,10 +117,10 @@ const Encrypt = () => {
             onChange={handleFileChange}
           />
           <Divider />
-          {keyFile && keyFile.name && (
+          {keyFile && keyFile.fileTextContent && (
             <>
               <h4>Llave:</h4>
-              <Paragraph>{keyFile.name}</Paragraph>
+              <Paragraph>{keyFile.fileTextContent}</Paragraph>
             </>
           )}
 
