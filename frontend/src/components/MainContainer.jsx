@@ -6,6 +6,7 @@ import {
 } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import Fernet from "./algorithm/Fernet";
+import Matrix from "./matrix/Matrix";
 
 const { Header, Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children) {
@@ -73,7 +74,8 @@ const App = () => {
               borderRadius: borderRadiusLG,
             }}
           >
-            <Fernet />
+            <Matrix />
+            {/* <Fernet /> */}
           </div>
         </Content>
         <Footer
