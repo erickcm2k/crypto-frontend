@@ -7,6 +7,7 @@ import {
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import Fernet from "./algorithm/Fernet";
 import Matrix from "./matrix/Matrix";
+import AES from "./aes/aes";
 
 const { Header, Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children) {
@@ -18,9 +19,9 @@ function getItem(label, key, icon, children) {
   };
 }
 const items = [
-  getItem("Fernet", "2", <DesktopOutlined />),
-  getItem("Algoritmo 2", "1", <PieChartOutlined />),
-  getItem("Algoritmo 3", "sub1", <UserOutlined />),
+  // getItem("Fernet", "2", <DesktopOutlined />),
+  // getItem("Algoritmo 2", "1", <PieChartOutlined />),
+  // getItem("Algoritmo 3", "sub1", <UserOutlined />),
 ];
 const App = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -58,14 +59,14 @@ const App = () => {
             margin: "0 16px",
           }}
         >
-          <Breadcrumb
+          {/* <Breadcrumb
             style={{
               margin: "16px 0",
             }}
-          >
-            <Breadcrumb.Item>Algoritmo 1</Breadcrumb.Item>
-            <Breadcrumb.Item>Algoritmo 2</Breadcrumb.Item>
-          </Breadcrumb>
+          > */}
+            {/* <Breadcrumb.Item>Algoritmo 1</Breadcrumb.Item>
+            <Breadcrumb.Item>Algoritmo 2</Breadcrumb.Item> */}
+          {/* </Breadcrumb> */}
           <div
             style={{
               padding: 24,
@@ -74,8 +75,8 @@ const App = () => {
               borderRadius: borderRadiusLG,
             }}
           >
-            <Matrix />
             {/* <Fernet /> */}
+            <AES />
           </div>
         </Content>
         <Footer
