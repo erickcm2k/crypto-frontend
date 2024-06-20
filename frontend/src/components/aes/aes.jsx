@@ -111,7 +111,9 @@ const AES = () => {
   };
   const getKeyAndIV = async () => {
     try {
-      const resp = await fetch(`https://backend-crypto-flask-9976f82913d4.herokuapp.com/generate_key_iv`);
+      const resp = await fetch(
+        `https://backend-crypto-flask-9976f82913d4.herokuapp.com/generate_key_iv`
+      );
       if (!resp.ok) {
         throw new Error("Network response was not ok " + resp.statusText);
       }
@@ -179,7 +181,7 @@ const AES = () => {
         </>
       )}
 
-<br></br>
+      <br></br>
       <div>
         <label htmlFor="mi-select">Selecciona modo de operación:</label>
         <select id="mi-select" value={operationMode} onChange={handleChange}>
@@ -202,7 +204,7 @@ const AES = () => {
                 ref={fileInputRef}
                 style={{ display: "none" }}
                 type="file"
-                accept="image/*"
+                accept=".bmp"
                 onChange={handleImageChange}
                 required
               />
@@ -239,7 +241,8 @@ const AES = () => {
                   type="text"
                   value={iv}
                   onChange={handleIvChange}
-                  required={operationMode !== 'ECB'}                />
+                  required={operationMode !== "ECB"}
+                />
               </label>
             </div>
             <button
@@ -253,11 +256,16 @@ const AES = () => {
             <Button
               type="primary"
               onClick={() => handleButtonClick("submitBtn")}
-              
             >
               Cifrar
             </Button>
-            <Button type="primary" style={{marginLeft: '10px'}} danger ghost onClick={clearEncrypt}>
+            <Button
+              type="primary"
+              style={{ marginLeft: "10px" }}
+              danger
+              ghost
+              onClick={clearEncrypt}
+            >
               Limpiar
             </Button>
           </form>
@@ -278,7 +286,7 @@ const AES = () => {
                 style={{ display: "none" }}
                 type="file"
                 ref={fileInputRefDecrypt}
-                accept="image/*"
+                accept=".bmp"
                 onChange={handlecipheredImage}
                 required
               />
@@ -315,19 +323,31 @@ const AES = () => {
                   type="text"
                   value={iv}
                   onChange={handleIvChange}
-                  required={operationMode !== 'ECB'}
+                  required={operationMode !== "ECB"}
                 />
               </label>
             </div>
             <br></br>
-            <button type="submit" style={{display: 'none'}} ref={submitBtnRefDecrypt}>Enviar</button>
+            <button
+              type="submit"
+              style={{ display: "none" }}
+              ref={submitBtnRefDecrypt}
+            >
+              Enviar
+            </button>
             <Button
               type="primary"
               onClick={() => handleButtonClick("submitBtnDecrypt")}
             >
               Descifrar
             </Button>
-            <Button style={{marginLeft: '10px'}} type="primary" danger ghost onClick={clearDecrypt}> 
+            <Button
+              style={{ marginLeft: "10px" }}
+              type="primary"
+              danger
+              ghost
+              onClick={clearDecrypt}
+            >
               Limpiar
             </Button>
           </form>
