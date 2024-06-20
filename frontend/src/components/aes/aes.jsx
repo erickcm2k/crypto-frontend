@@ -82,7 +82,7 @@ const AES = () => {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:5000/${operationMode}/encrypt`,
+        `https://backend-crypto-flask-9976f82913d4.herokuapp.com/${operationMode}/encrypt`,
         {
           method: "POST",
           body: formData,
@@ -111,7 +111,7 @@ const AES = () => {
   };
   const getKeyAndIV = async () => {
     try {
-      const resp = await fetch(`http://127.0.0.1:5000/generate_key_iv`);
+      const resp = await fetch(`https://backend-crypto-flask-9976f82913d4.herokuapp.com/generate_key_iv`);
       if (!resp.ok) {
         throw new Error("Network response was not ok " + resp.statusText);
       }
@@ -133,7 +133,7 @@ const AES = () => {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:5000/${operationMode}/decrypt`,
+        `https://backend-crypto-flask-9976f82913d4.herokuapp.com/${operationMode}/decrypt`,
         {
           method: "POST",
           body: formData,
