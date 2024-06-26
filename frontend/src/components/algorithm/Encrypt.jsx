@@ -56,7 +56,7 @@ const Encrypt = () => {
     setFileContent({ ...fileContent, name: fileContent.name });
 
     try {
-      const resp = await fetch("http://127.0.0.1:5000/encrypt", {
+      const resp = await fetch("https://backend-crypto-flask-9976f82913d4.herokuapp.com/encrypt", {
         method: "POST",
         body: fd,
       });

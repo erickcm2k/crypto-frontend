@@ -7,7 +7,7 @@ const { Title } = Typography;
 
 const Fernet = () => {
   const handleButtonClick = async () => {
-    window.open("http://127.0.0.1:5000/key");
+    window.open("https://backend-crypto-flask-9976f82913d4.herokuapp.com/key");
   };
 
   return (

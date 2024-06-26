@@ -57,7 +57,7 @@ const Encrypt = () => {
 
     try {
       debugger
-      const resp = await fetch("http://127.0.0.1:5000/decrypt", {
+      const resp = await fetch("https://backend-crypto-flask-9976f82913d4.herokuapp.com/decrypt", {
         method: "POST",
         body: fd,
       });

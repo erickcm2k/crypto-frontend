@@ -2,6 +2,10 @@ import React, { useState, useRef } from "react";
 import { Col, Row, Divider, Typography, Button } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { Input } from "antd";
+import RSAEncrypt from "./RSAEncrypt";
+import RSADecrypt from "./RSADecrypt";
+import Swal from "sweetalert2";
+
 const { Title } = Typography;
 const AES = () => {
   const [data, setdata] = useState({});
@@ -90,30 +94,46 @@ const AES = () => {
       );
 
       if (response.ok) {
-        alert("Formulario enviado exitosamente");
+        console.log(response);
+        const contentDisposition = response.headers.get("Content-Disposition");
+        let filename = ""; // Nombre por defecto
+        console.log(contentDisposition);
+        // const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+        // if (filenameMatch.length === 2) {
+        //   filename = filenameMatch[1];
+        // }
+
+        // alert("Formulario enviado exitosamente");
         const returnedImageData = await response.blob();
+        console.log(returnedImage);
         setReturnedImage(URL.createObjectURL(returnedImageData));
 
         // Crear un enlace temporal y hacer clic en él para iniciar la descarga
         const downloadLink = document.createElement("a");
         downloadLink.href = URL.createObjectURL(returnedImageData);
-        downloadLink.download = "imagen_devuelta.bmp"; // Nombre del archivo a descargar
+        downloadLink.download = `image_${operationMode}_C.bmp`; // Nombre del archivo a descargar
         document.body.appendChild(downloadLink);
         downloadLink.click();
         document.body.removeChild(downloadLink);
       } else {
-        alert("Error al enviar el formulario");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Revisa los archivos cargados. Es posible que se estén ingresando datos incorrectos.",
+        });
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Error al enviar el formulario");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Revisa los archivos cargados. Es posible que se estén ingresando datos incorrectos.",
+      });
     }
   };
   const getKeyAndIV = async () => {
     try {
-      const resp = await fetch(
-        `https://backend-crypto-flask-9976f82913d4.herokuapp.com/generate_key_iv`
-      );
+      const resp = await fetch(`https://backend-crypto-flask-9976f82913d4.herokuapp.com/generate_key_iv`);
       if (!resp.ok) {
         throw new Error("Network response was not ok " + resp.statusText);
       }
@@ -143,7 +163,7 @@ const AES = () => {
       );
 
       if (response.ok) {
-        alert("Formulario enviado exitosamente");
+        // alert("Formulario enviado exitosamente");
 
         const returnedImageData = await response.blob();
         setReturnedImage2(URL.createObjectURL(returnedImageData));
@@ -151,25 +171,52 @@ const AES = () => {
         // Crear un enlace temporal y hacer clic en él para iniciar la descarga
         const downloadLink = document.createElement("a");
         downloadLink.href = URL.createObjectURL(returnedImageData);
-        downloadLink.download = "imagen_devuelta.bmp"; // Nombre del archivo a descargar
+        downloadLink.download = `image_${operationMode}_C_D.bmp`;
         document.body.appendChild(downloadLink);
         downloadLink.click();
         document.body.removeChild(downloadLink);
       } else {
-        alert("Error al enviar el formulario");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Revisa los archivos cargados. Es posible que se estén ingresando datos incorrectos.",
+        });
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Error al enviar el formulario");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Revisa los archivos cargados. Es posible que se estén ingresando datos incorrectos.",
+      });
     }
   };
 
   return (
     <div>
-      <Title level={2}>AES - Advanced Encryption Standard</Title>
+      <Title level={2}>
+        AES - Advanced Encryption Standard + RSA - Rivest Shamir Adleman
+      </Title>
 
+      <Divider orientation="left">
+        Obtención de llave pública y privada RSA
+      </Divider>
+
+      <Row gutter={16}>
+        <Col className="gutter-row" span={12}>
+          <Divider orientation="left">Cifrado RSA</Divider>
+          <RSAEncrypt />
+        </Col>
+
+        <Col className="gutter-row" span={12}>
+          <Divider orientation="left">Descifrado RSA</Divider>
+          <RSADecrypt />
+        </Col>
+      </Row>
+
+      <Divider orientation="left">AES</Divider>
       <Button onClick={getKeyAndIV}>
-        Obtener llave y vector de inicialización
+        Obtener llave y vector de inicialización para AES
       </Button>
       <br></br>
       {data && (
