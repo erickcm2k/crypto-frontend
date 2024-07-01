@@ -8,6 +8,7 @@ import { Breadcrumb, Layout, Menu, theme } from "antd";
 import Fernet from "./algorithm/Fernet";
 import Matrix from "./matrix/Matrix";
 import AES from "./aes/aes";
+import HibridaV2 from './hibridav2/hibridav2'
 
 const { Header, Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children) {
@@ -76,7 +77,9 @@ const App = () => {
             }}
           >
             {/* <Fernet /> */}
-            <AES />
+            {/* <AES /> */}
+            <HibridaV2 />
+            
           </div>
         </Content>
         <Footer
