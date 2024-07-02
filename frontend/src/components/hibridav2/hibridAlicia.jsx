@@ -64,39 +64,33 @@ const CifradoRSA = () => {
   const handleEncrypt = async () => {
     try {
       setLoading(true);
-
+  
       const formData = new FormData();
       formData.append("archivo_dh", archivoDhFile);
       formData.append("archivo_a_cifrar", archivoACifrarFile);
-
+  
       const response = await fetch("https://backend-crypto-flask-9976f82913d4.herokuapp.com/Hibrid_Alicia/encrypt", {
         method: "POST",
         body: formData,
       });
-
+  
       if (!response.ok) {
         throw new Error("Error al cifrar el archivo");
       }
-
-      const data = await response.json();
-
-      // Convertir el archivo cifrado de hexadecimal a bytes
-      const archivoCifradoBytes = Uint8Array.from(
-        data.archivo_cifrado.match(/.{1,2}/g).map((byte) => parseInt(byte, 16))
-      );
-
+  
+      // Obtener el blob del archivo cifrado directamente desde la respuesta
+      const archivoCifradoBlob = await response.blob();
+  
       // Guardar el archivo cifrado
-      const archivoCifradoBlob = new Blob([archivoCifradoBytes], {
-        type: "application/octet-stream",
-      });
       saveAs(archivoCifradoBlob, "archivo_cifrado.bin");
-      setArchivoCifradoFile(archivoCifradoBlob); // Guardar el archivo cifrado en el estado
+      setArchivoCifradoFile(archivoCifradoBlob); 
     } catch (error) {
       setError(error.message);
     } finally {
       setLoading(false);
     }
   };
+  
 
   // Función para firmar el archivo cifrado
   const handleSignData = async () => {
@@ -137,7 +131,7 @@ const CifradoRSA = () => {
 
       <h3>Generación de llaves RSA</h3>
       <Button type="primary" onClick={handleGenerarLlaves} disabled={loading}>
-        {loading ? <Spin /> : "Generar Llaves"}
+        {loading ? <Spin /> : "Generar Llaves RSA"}
       </Button>
 
       <h3>Cifrado de archivo</h3>
@@ -147,7 +141,7 @@ const CifradoRSA = () => {
         maxCount={1}
         accept=".bin"
       >
-        <Button>Subir archivo_dh.bin (AES)</Button>
+        <Button>Subir (AES)</Button>
       </Upload>
       <br></br>
       <Upload
@@ -185,7 +179,7 @@ const CifradoRSA = () => {
         maxCount={1}
         accept=".pem"
       >
-        <Button>Subir llave privada (PEM)</Button>
+        <Button>Subir llave privada alicia RSA</Button>
       </Upload>
       <br></br>
       <Button

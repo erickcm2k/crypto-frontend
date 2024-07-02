@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { saveAs } from "file-saver";
 import { Spin, Button, Upload, Form, message, Divider } from "antd";
+import HibridBetitoVerificar from './HibridBetitoVerificar'
 
 const HibridoBetito = () => {
   // Estados para archivos y carga
@@ -14,9 +15,6 @@ const HibridoBetito = () => {
   // Referencias para los componentes Upload
   const archivoCifradoInputRef = useRef(null);
   const archivoDHInputRef = useRef(null);
-  const archivoFirmadoInputRef = useRef(null);
-  const llavePublicaInputRef = useRef(null);
-
   // Funciones para manejar la carga de archivos
   const handleArchivoCifradoUpload = (file) => {
     setArchivoCifradoFile(file);
@@ -24,14 +22,6 @@ const HibridoBetito = () => {
 
   const handleArchivoDHUpload = (file) => {
     setArchivoDHFile(file);
-  };
-
-  const handleArchivoFirmadoUpload = (file) => {
-    setArchivoFirmadoFile(file);
-  };
-
-  const handleLlavePublicaUpload = (file) => {
-    setLlavePublicaFile(file);
   };
 
   // Función para descifrar el archivo
@@ -64,36 +54,6 @@ const HibridoBetito = () => {
     }
   };
 
-  // Función para verificar la firma
-  const handleVerify = async () => {
-    try {
-      setLoading(true);
-
-      const formData = new FormData();
-      formData.append("archivo_firmado", archivoFirmadoFile);
-      formData.append("llave_publica", llavePublicaFile);
-
-      const response = await fetch("https://backend-crypto-flask-9976f82913d4.herokuapp.com/Hibrid_Betito/verificar", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Error al verificar la firma");
-      }
-
-      const data = await response.json();
-      if (data.verificacion) {
-        message.success("La firma es válida");
-      } else {
-        message.error("La firma no es válida");
-      }
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div>
@@ -111,14 +71,14 @@ const HibridoBetito = () => {
             <Button>Subir archivo cifrado (.bin)</Button>
           </Upload>
         </Form.Item>
-        <Form.Item label="Archivo DH (.bin)">
+        <Form.Item label="Archivo AES (.bin)">
           <Upload
             ref={archivoDHInputRef}
             beforeUpload={handleArchivoDHUpload}
             maxCount={1}
             accept=".bin"
           >
-            <Button>Subir archivo DH (.bin)</Button>
+            <Button>Subir archivo (AES)</Button>
           </Upload>
         </Form.Item>
         <Form.Item>
@@ -133,40 +93,7 @@ const HibridoBetito = () => {
       </Form>
 
       <Divider />
-
-      <h3>Verificar Firma</h3>
-      <Form>
-        <Form.Item label="Archivo Firmado (.signed)">
-          <Upload
-            ref={archivoFirmadoInputRef}
-            beforeUpload={handleArchivoFirmadoUpload}
-            maxCount={1}
-            accept=".signed"
-          >
-            <Button>Subir archivo firmado (.signed)</Button>
-          </Upload>
-        </Form.Item>
-        <Form.Item label="Llave Pública (PEM)">
-          <Upload
-            ref={llavePublicaInputRef}
-            beforeUpload={handleLlavePublicaUpload}
-            maxCount={1}
-            accept=".pem"
-          >
-            <Button>Subir llave pública (PEM)</Button>
-          </Upload>
-        </Form.Item>
-        <Form.Item>
-          <Button
-            type="primary"
-            onClick={handleVerify}
-            disabled={loading || !archivoFirmadoFile || !llavePublicaFile}
-          >
-            {loading ? <Spin /> : "Verificar"}
-          </Button>
-        </Form.Item>
-      </Form>
-
+      <HibridBetitoVerificar/>
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );

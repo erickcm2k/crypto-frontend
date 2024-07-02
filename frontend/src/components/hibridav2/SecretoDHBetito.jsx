@@ -18,7 +18,7 @@ const SecretoDHBetito = () => {
       formData.append("alicia_private_key", aliciaPrivateKeyFile);
       formData.append("betito_public_key", betitoPublicKeyFile);
 
-      const response = await fetch("https://backend-crypto-flask-9976f82913d4.herokuapp.com/obten_secreto", {
+      const response = await fetch("https://backend-crypto-flask-9976f82913d4.herokuapp.com/LlaveCom_Alicia/obten_secreto", {
         method: "POST",
         body: formData,
       });
